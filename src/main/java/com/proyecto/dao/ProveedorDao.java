@@ -18,15 +18,15 @@ public interface ProveedorDao extends JpaRepository<Proveedor, Integer>{
     @Query(value = "select p from Proveedor p inner join fetch p.administrador inner join fetch p.productos") 
     public List<Proveedor> findAll(Sort sort);
 
-    // Recuperar listado de Clientes paginados:
-    //devuelve el numero de Clientes fijados por el pageable
+    // Recuperar listado de proveedores paginados:
+    
     @Query(value = "select p from Proveedor p inner join fetch p.administrador inner join fetch p.productos", 
     countQuery = "select count(p) from Proveedor c left join c.administrador left join c.productos")
     public Page<Proveedor> findAll(Pageable pageable);
 
 
 
-    // Consulta para recuperar las presentaciones con sus Clientes utilizando HQL se recupera por el id:
+    // Consulta para recuperar las presentaciones con sus proveedores utilizando HQL se recupera por el id:
     @Query(value = "select p from Proveedor p left join fetch p.administrador left join fetch p.productos where p.id = :id")
     public Proveedor findById(long id);
 }
