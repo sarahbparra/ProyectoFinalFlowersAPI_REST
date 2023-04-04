@@ -3,12 +3,13 @@ package com.proyecto.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.proyecto.dao.ProductoDao;
 import com.proyecto.entities.Producto;
-import com.proyecto.entities.Proveedor;
 
 @Service
 public class ProductoServiceImpl implements ProductoService{
@@ -17,46 +18,29 @@ public class ProductoServiceImpl implements ProductoService{
     private ProductoDao productoDao;
 
     @Override
-    public List<Producto> findAll() {
-        return productoDao.findAll();
+    public List<Producto> findAll(Sort sort) {
+        return productoDao.findAll(sort);
     }
 
     @Override
-    public Producto findById(int idProducto) {
-        return productoDao.findById(idProducto).get();
+    public Page<Producto> findAll(Pageable pageable) {
+        return productoDao.findAll(pageable);
     }
 
     @Override
-    @Transactional
-    public void save(Producto producto) {
-        productoDao.save(producto);
+    public Producto findById(long id) {
+        return productoDao.findById(id);
     }
 
     @Override
-    @Transactional
-    public void deleteById(int idProducto) {
-        productoDao.deleteById(idProducto);
+    public Producto save(Producto producto) {
+        return productoDao.save(producto);
     }
 
     @Override
-    @Transactional
-    public void deleteByProveedor(Proveedor proveedor) {
-        productoDao.deleteByProveedor(proveedor);
-    }
+    public void delete(Producto producto) {
+        productoDao.delete(producto);
 
-    @Override
-    public List<Producto> findByProveedor(Proveedor proveedor) {
-        return productoDao.findByProveedor(proveedor);
-    }
-
-    // @Override
-    // public List<Producto> findByPedido(Pedido pedido) {
-    //    return productoDao.findByPedido(pedido);
-    // }
-
-    // @Override
-    // public List<Producto> findByComprador(Comprador comprador) {
-    //     return productoDao.findByComprador(comprador);
-    // }
+   
     
-}
+}}
