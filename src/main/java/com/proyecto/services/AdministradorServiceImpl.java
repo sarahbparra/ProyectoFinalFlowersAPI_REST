@@ -21,6 +21,8 @@ import com.proyecto.entities.Administrador;
 @Service
 public class AdministradorServiceImpl implements AdministradorService {
 
+    /** Creamos la variable de tipo Dao para poder inyectarle la capa DAO, puede resolverse con un @Autowire o mediante constructor: */
+    
     @Autowired
     private AdministradorDao administradorDao;
 
@@ -41,12 +43,12 @@ public class AdministradorServiceImpl implements AdministradorService {
      * Este método encuentra y devuelve un administrador en la base de datos por su
      * ID.
      * 
-     * @param idAdministrador - el ID del administrador a buscar.
+     * @param id - el ID del administrador a buscar.
      * @return Administrador - el administrador encontrado, si existe.
      */
     @Override
-    public Administrador findById(int idAdministrador) {
-        return administradorDao.findById(idAdministrador).get();
+    public Administrador findById(long id) {
+        return administradorDao.findById(id).get();
     }
 
     /**
@@ -56,8 +58,8 @@ public class AdministradorServiceImpl implements AdministradorService {
      * @param Administrador - el administrador a guardar.
      */
     @Override
-    public void save(Administrador Administrador) {
-        administradorDao.save(Administrador);
+    public Administrador save(Administrador Administrador) {
+       return administradorDao.save(Administrador);
     }
 
     /**
@@ -71,14 +73,5 @@ public class AdministradorServiceImpl implements AdministradorService {
         administradorDao.delete(Administrador);
     }
 
-    /**
-     * 
-     * Este método elimina un administrador de la base de datos por su ID.
-     * 
-     * @param idAdministrador - el ID del administrador a eliminar.
-     */
-    @Override
-    public void deleteById(int idAdministrador) {
-        administradorDao.deleteById(idAdministrador);
-    }
+    
 }
