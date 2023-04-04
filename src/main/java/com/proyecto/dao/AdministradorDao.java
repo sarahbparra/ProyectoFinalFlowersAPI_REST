@@ -4,16 +4,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.proyecto.entities.Administrador;
 
-/**
- * 
- * Esta interfaz define la capa DAO para la entidad Administrador.
- * Utiliza Spring Data JPA para proporcionar métodos CRUD básicos para la
- * entidad.
- */
+  
+import java.util.List;
 
-public interface AdministradorDao extends JpaRepository<Administrador, Integer> {
-    
-}
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+
+
+public interface AdministradorDao extends JpaRepository<Administrador, Long>{
+
 /**
  
  * La interfaz extiende la interfaz JpaRepository, que proporciona métodos
@@ -27,3 +30,21 @@ public interface AdministradorDao extends JpaRepository<Administrador, Integer> 
  * ejecución en función de los nombres de los métodos definidos en esta
  * interfaz. 
  */
+
+//En principio no haría falta. COMPROBAR
+    
+//     /**Método que devuelve lista de administradors ordenados */
+// @Query(value = "select p from Producto p left join fetch p.administrador")
+// public List<Producto> findAll(Sort sort);
+
+// /**Método que devuelve lista de productos paginados */
+// @Query(value = "select p from Producto p left join fetch p.administrador",
+// countQuery = "select count(p) from Producto p left join p.administrador")
+// public Page<Producto> findAll(Pageable pageable);
+
+// /**Método que recupera producto por el ID */
+// @Query(value = "select p from Producto p left join fetch p.administrador where p.id = :id")
+// public Producto findById(long id);
+
+
+}
