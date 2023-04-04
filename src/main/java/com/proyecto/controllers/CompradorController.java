@@ -78,8 +78,8 @@ public class CompradorController {
 
      /**Método para recuperar comprador por id  */
 
-     @GetMapping("/{id}")
+    //  @GetMapping("/{id}")
 
-     public ResponseEntity<Map<String, Object>> findById(@PathVariable)
+    //  public ResponseEntity<Map<String, Object>> findById(@PathVariable)
     
 }
