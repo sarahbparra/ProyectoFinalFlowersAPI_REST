@@ -20,10 +20,7 @@ public class ProyectoFinalFlowersApiRestApplication implements CommandLineRunner
 	@Override
 	public void run(String... args) throws Exception {
 		/**
-		 * Método para agregar registros de muestra para administrador (crear y añadir
-		 * administradores),
-		 * Empleado (crear y añadir empleados) y Telefono (crear y añadir
-		 * telefonos):
+		 * Método para agregar registros de muestra para administrador 
 		 */
 
 		administradorService.save(Administrador.builder()
