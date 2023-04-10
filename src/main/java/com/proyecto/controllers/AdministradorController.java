@@ -61,10 +61,12 @@ public class AdministradorController {
     private AdministradorService administradorService;
 
     /**
-     * Obtener todos los administradores. En este caso, al ser podos
+     * Método para obtener todos los administradores como una lista. En este caso,
+     * al ser podos
      * administradores, hemos decidido que una lista es suficiente, sin necesidad de
      * paginado o tamaño
      */
+    // FUNCIONA
     @GetMapping
     public ResponseEntity<List<Administrador>> findAll() {
         ResponseEntity<List<Administrador>> responseEntity = null;
@@ -84,7 +86,8 @@ public class AdministradorController {
         return responseEntity;
     }
 
-    // Obtener un administrador por su id
+    // Obtener un administrador por su id:
+    // FUNCIONA
     @GetMapping("/{id}")
     public ResponseEntity<Map<String, Object>> findById(@PathVariable(name = "id") Long id) {
         Map<String, Object> responseAsMap = new HashMap<>();
@@ -113,19 +116,21 @@ public class AdministradorController {
     }
 
     // Crear un nuevo administrador
-    @PostMapping
+    @PostMapping("/create")
     @Transactional
-    public ResponseEntity<Map<String, Object>> insert(@Valid @RequestBody Administrador administrador,
+    public ResponseEntity<Map<String, Object>> createAdministrador(
+        @Valid @RequestBody Administrador administrador,
             BindingResult result) {
+
         Map<String, Object> responseAsMap = new HashMap<>();
 
-        // Primero hay que comprobar si hay errores en el administrador recibido
+        // Si hay que comprobar si hay errores en el administrador recibido
         if (result.hasErrors()) {
             List<String> errorMessages = new ArrayList<>();
             // Se recorren todos los errores y se agregan a la lista
             for (ObjectError error : result.getAllErrors()) {
                 errorMessages.add(error.getDefaultMessage());
-            }
+            } //ALTERNATIVA: convertir for en stream con expresión lambda
             responseAsMap.put("errores", errorMessages);
             // Se devuelve la respuesta con los errores y un código de estado BAD REQUEST
             return new ResponseEntity<>(responseAsMap, HttpStatus.BAD_REQUEST);
@@ -154,26 +159,49 @@ public class AdministradorController {
 
     // // Actualizar un administrador existente
     // @PutMapping("/{id}")
-    // public ResponseEntity<Administrador> update(@PathVariable("id") long id, @RequestBody Administrador administrador) {
-    //     Administrador administradorExistente = administradorService.findById(id);
-    //     if (administradorExistente != null) {
-    //         administrador.setId(id);
-    //         Administrador administradorActualizado = administradorService.save(administrador);
-    //         return ResponseEntity.ok(administradorActualizado);
-    //     } else {
-    //         return ResponseEntity.notFound().build();
-    //     }
+    // @Transactional
+    // public ResponseEntity<Administrador> update(@PathVariable("id") long id,
+    // @RequestBody Administrador administrador) {
+    // Administrador administradorExistente = administradorService.findById(id);
+    // if (administradorExistente != null) {
+    // administrador.setById(id);
+    // Administrador administradorActualizado =
+    // administradorService.save(administrador);
+    // return ResponseEntity.ok(administradorActualizado);
+    // } else {
+    // return ResponseEntity.notFound().build();
+    // }
     // }
 
     // Eliminar un administrador por su id
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") long id) {
-        Administrador administrador = administradorService.findById(id);
-        if (administrador != null) {
-            administradorService.delete(administrador);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    @DeleteMapping("/delete/{id}")
+    @Transactional
+    public ResponseEntity<String> delete(@PathVariable(name = "id") Long id) {
+
+        ResponseEntity<String> responseEntity = null;
+
+        try {
+
+            // Primero lo recuperamos
+            Administrador administrador = administradorService.findById(id);
+            // Si existe, lo borramos
+            if (administrador != null) {
+                administradorService.delete(administrador);
+
+                responseEntity = new ResponseEntity<String>("El administrador se ha borrado correctamente",
+                        HttpStatus.OK);
+            } else {
+                // De lo contrario, informamos de que no existe
+                responseEntity = new ResponseEntity<String>("Este administrador no existe", HttpStatus.NOT_FOUND);
+
+            }
+
+        } catch (DataAccessException e) {
+            e.getMostSpecificCause();
+            responseEntity = new ResponseEntity<String>("Error fatal", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+
+        return responseEntity;
+
     }
 }
